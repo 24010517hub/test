@@ -1,0 +1,879 @@
+/* --- 0. 変数定義 (変更したい色をここで一括管理) --- */
+:root {
+    --color-dark-bg: #1a1a1a;
+    /* サイト全体の背景色 */
+    --color-card-bg: #2d2d2d;
+    /* カード/フォームの背景色 */
+    --color-input-bg: #444;
+    /* 入力欄の背景色 */
+    --color-accent: #81e6d9;
+    /* メインのアクセントカラー (水色) */
+    --color-text-light: #e0e0e0;
+    /* 薄い文字色 */
+    --color-text-dark: #111;
+    /* 濃い文字色 (ボタンなど) */
+    --color-border: #555;
+    /* フォームの境界線の色 */
+}
+
+/* ---------------------------------------------------------------- */
+/* --- 1. 基本設定 (全ページ共通) --- */
+/* ---------------------------------------------------------------- */
+body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    background-color: var(--color-dark-bg);
+    color: var(--color-text-light);
+}
+
+/* ---------------------------------------------------------------- */
+/* --- 2. ヘッダー (全ページ共通) --- */
+/* ---------------------------------------------------------------- */
+header,
+.contact-header {
+    /* 両方のクラスに適用 */
+    text-align: center;
+    padding: 40px 20px;
+    background-color: #111;
+    color: white;
+    border-bottom: 2px solid #333;
+    position: relative;
+}
+
+
+header h1,
+.contact-header h1 {
+    margin-top: 0;
+}
+
+
+/* お問い合わせボタン (トップページ用) */
+.contact-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 8px 15px;
+    background-color: var(--color-accent);
+    color: var(--color-text-dark);
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    z-index: 10;
+}
+
+.contact-button:hover {
+    background-color: #5cc2b2;
+}
+
+/* ★★★ 動画背景ヘッダーの基本設定（index.html専用） ★★★ */
+.video-header {
+    height: 50vh;
+    /* 画面の高さ全体を使う */
+    margin: 0 100px 0 100px;
+    padding: 0;
+    /* 動画を画面端まで広げるためパディングをリセット */
+    background-color: transparent;
+    /* 背景色を透明に */
+
+    /* 動画の上にコンテンツを重ねる設定 */
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* 動画背景コンテナの設定 */
+.header-video-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+/* 動画要素自体の設定 */
+.header-video-container video {
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: cover;
+    /* 画面全体を覆う */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+
+/* コンテンツ（文字やボタン）の設定 */
+.header-content {
+    position: relative;
+    /* z-indexを適用するために必要 */
+    z-index: 2;
+    /* 動画の上に表示 */
+    color: white;
+    text-align: center;
+    /* テキストに影をつけ、動画の上でも読みやすくする */
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+/* 映画ページへボタン（例） */
+.movie-page-button {
+    display: inline-block;
+    padding: 12px 25px;
+    margin-top: 20px;
+    background-color: var(--color-accent);
+    color: var(--color-text-dark);
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+/* ヘッダーの下のセクションとの境目を見えやすくするため、mainの最初のセクションを調整 */
+.site-intro {
+    padding-top: 50px;
+    text-align: center;
+}
+
+
+/* ---------------------------------------------------------------- */
+/* --- 3. トップページ (index.html) のレイアウト --- */
+/* ---------------------------------------------------------------- */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* 横2列 */
+    gap: 30px;
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* カードのデザイン（共通） */
+.card {
+    display: block;
+    background-color: var(--color-card-bg);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    text-decoration: none;
+    color: white;
+
+    /* JSアニメーション用 */
+    opacity: 0;
+    transform: translateY(30px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* カードにマウスを乗せたとき */
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7);
+    cursor: pointer;
+}
+
+/* 画像エリア */
+.card-image {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: brightness(0.8);
+    transition: transform 0.5s ease;
+}
+
+/* マウスを乗せたときに画像を拡大 */
+.card:hover .card-image img {
+    transform: scale(1.1);
+}
+
+/* 文字エリア */
+.card-content {
+    padding: 20px;
+}
+
+.card-content h2 {
+    margin-top: 0;
+    color: var(--color-accent);
+    margin-bottom: 10px;
+}
+
+.card-content p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #ccc;
+}
+
+/* JS用のアニメーション完了クラス */
+.card.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+
+/* ---------------------------------------------------------------- */
+/* --- 4. 詳細ページ (game.html, movie.html...) のスタイル --- */
+/* ---------------------------------------------------------------- */
+
+/* ホームへ戻るボタン (詳細ページ/お問い合わせページ用) */
+.back-to-home,
+.back-to-home-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 8px 15px;
+    background-color: var(--color-accent);
+    color: var(--color-text-dark);
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    z-index: 10;
+}
+
+.back-to-home:hover,
+.back-to-home-button:hover {
+    background-color: #5cc2b2;
+}
+
+/* 各セクションの区切り線 */
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #333;
+    max-width: 900px;
+    margin: 60px auto;
+}
+
+/* セクションの共通設定 */
+.game-section {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+/* ロゴとタイトルを並べるヘッダー部分 */
+.game-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--color-accent);
+}
+
+.game-logo {
+    width: 150px;
+    height: auto;
+    margin-right: 20px;
+    filter: drop-shadow(0 0 5px rgba(129, 230, 217, 0.5));
+}
+
+.game-header h2 {
+    margin: 0;
+    font-size: 2.2rem;
+    color: white;
+}
+
+/* コンテンツエリアを横並びにする */
+.content-wrapper {
+    display: flex;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+/* サマリーカード */
+.summary-card {
+    flex: 0 0 280px;
+    background-color: var(--color-card-bg);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.summary-card h3 {
+    color: var(--color-accent);
+    margin-top: 0;
+}
+
+/* 詳細説明テキストエリア */
+.details-text {
+    flex: 1;
+    line-height: 1.8;
+}
+
+.details-text h3 {
+    color: var(--color-accent);
+    border-bottom: 1px dashed #444;
+    padding-bottom: 5px;
+    margin-top: 30px;
+}
+
+.details-text p {
+    margin-bottom: 20px;
+}
+
+/* リストのデザイン */
+.content-list {
+    list-style: none;
+    padding: 0;
+}
+
+.content-list li {
+    margin-bottom: 8px;
+    padding-left: 15px;
+    position: relative;
+}
+
+.content-list li::before {
+    content: '•';
+    color: var(--color-accent);
+    font-size: 1.2rem;
+    position: absolute;
+    left: 0;
+}
+
+.content-list a {
+    color: var(--color-text-light);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.content-list a:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
+}
+
+/* コンテンツ内の画像調整 */
+.content-image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 20px 0;
+    border-radius: 8px;
+}
+
+/* カードを置かない場合のスタイル調整 */
+.full-width-content {
+    width: 100%;
+}
+
+/* 未定セクションの調整 */
+.coming-soon-section .game-header {
+    justify-content: center;
+    border-bottom: 2px solid #555;
+}
+
+.coming-soon-section .game-header h2 {
+    color: #ccc;
+}
+
+.coming-soon-section .details-text {
+    opacity: 0.7;
+}
+
+/* --- キャラクター画像グリッドのスタイル --- */
+.character-grid {
+    display: grid;
+    /* グリッドレイアウトを適用 */
+    grid-template-columns: repeat(2, 1fr);
+    /* 2列で、それぞれ均等幅 */
+    gap: 15px;
+    /* 画像間のスペース */
+    margin: 20px 0;
+    /* 上下の余白 */
+}
+
+.character-grid img {
+    width: 100%;
+    /* 親要素の幅に合わせて画像を縮小 */
+    height: auto;
+    /* 高さを自動調整し、アスペクト比を維持 */
+    border-radius: 8px;
+    /* 角を少し丸くする */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    /* 軽い影をつける */
+    transition: transform 0.2s ease-in-out;
+    /* ホバー時のアニメーション */
+}
+
+.character-grid img:hover {
+    transform: scale(1.05);
+    /* ホバー時に少し拡大 */
+}
+
+/* ---------------------------------------------------------------- */
+/* --- 5. 映画詳細ページ (movie.html) のスタイル --- */
+/* ---------------------------------------------------------------- */
+
+/* 映画グリッドセクション全体のコンテナ */
+.movie-main {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 40px auto;
+    color: var(--color-text-light);
+}
+
+/* 映画グリッドセクション全体の背景とシャドウ */
+.movie-grid-container {
+    padding: 30px;
+    background-color: var(--color-card-bg);
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+}
+
+.hyoudai {
+    text-align: center;
+    margin-bottom: 40px;
+    color: var(--color-accent);
+    font-size: 2rem;
+}
+
+.movie-main>h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    color: var(--color-accent);
+}
+
+/* 映画グリッドコンテナ (アベンジャーズ, キングダムなどの4作品シリーズ) */
+.movie-grid,
+.movie-grid2 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+
+/* 4作品をまとめるシリーズ名のグループ */
+.movie-series-group {
+    grid-column: 1 / span 4;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.series-title {
+    font-size: 1.3rem;
+    color: white;
+    font-weight: bold;
+    letter-spacing: 1px;
+    border-bottom: 2px solid var(--color-accent);
+    display: inline-block;
+    padding-bottom: 5px;
+    margin: 0;
+}
+
+/* 各映画アイテムのスタイル */
+.movie-item {
+    text-align: center;
+    background-color: var(--color-card-bg);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    transition: box-shadow 0.3s ease;
+}
+
+/* シリーズ名のスタイル (各作品の上に配置されるもの) */
+.movie-series {
+    font-size: 0.85rem;
+    /* フォントサイズを小さく */
+    color: #bbb;
+    /* タイトルより少し暗い色 */
+    margin: 0 0 5px 0;
+    /* 上下マージンを調整 */
+    font-weight: 500;
+}
+
+/* 映画タイトル (h2) のスタイル */
+.movie-item h2 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0 0 10px 0;
+    color: var(--color-text-light);
+    height: 5em;
+    line-height: 1.4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    word-break: break-word;
+
+    /* タイトル部分の背景を不透明にして画像に重ならないようにする */
+    background-color: #383838;
+    border-radius: 5px;
+    padding: 5px;
+    margin-top: 5px;
+
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.movie-item-now h2 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0 0 10px 0;
+    color: var(--color-text-light);
+    height: 5em;
+    line-height: 1.4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    word-break: break-word;
+
+    /* タイトル部分の背景を不透明にして画像に重ならないようにする */
+    background-color: #383838;
+    border-radius: 5px;
+    padding: 5px;
+    margin-top: 5px;
+
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.movie-item-row h2 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0 0 10px 0;
+    color: var(--color-text-light);
+    height: 5em;
+    line-height: 1.4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    word-break: break-word;
+
+    /* タイトル部分の背景を不透明にして画像に重ならないようにする */
+    background-color: #383838;
+    border-radius: 5px;
+    padding: 5px;
+    margin-top: 5px;
+
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+/* ポスター画像のスタイルとアニメーション */
+.movie-poster {
+    flex-grow: 1;
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 5px;
+    object-fit: contain;
+    /* object-fit: cover を上書きし contain に統一 */
+    cursor: pointer;
+
+    /* アニメーション設定 */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+/* 画像にホバーした時のアニメーション（ホバー拡大は残します） */
+.movie-poster:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
+}
+
+/* 5列専用のレイアウトコンテナ */
+.five-item-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    /* gap: -5px は間隔が詰まりすぎるため、10pxに変更しました */
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.eleven-item-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+.return-home-area {
+    position: absolute; /* 親要素（header）に対して絶対位置で配置 */
+    /* 下から30px */
+    right: 50px; /* 右から30px */
+    
+    /* 既存の .back-to-home-button のスタイルを適用させる */
+    padding: 8px 15px; 
+    background-color: var(--color-accent);
+    color: var(--color-text-dark);
+    text-decoration: none; 
+    border-radius: 5px;
+    font-weight: bold;
+    z-index: 10; /* 最前面に表示 */
+    transition: background-color 0.3s;
+}
+
+.return-home-button:hover {
+    background-color: #5cc2b2;
+}
+
+/* ================================================================ */
+/* --- 9. 音楽リストページ (music.html) のスタイル --- */
+/* ================================================================ */
+
+/* 横3列グリッドの定義 */
+.music-grid-3col {
+    display: grid;
+    /* 4列、均等幅 */
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 30px;
+    max-width: 1000px; /* 適切な最大幅を設定 */
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* 各楽曲カードのスタイル */
+.music-item-card {
+    /* 映画アイテムを参考に、背景や影を設定 */
+    background-color: var(--color-card-bg);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.music-item-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
+}
+
+.music-item-card h3 {
+    font-size: 1.1rem;
+    color: var(--color-accent);
+    margin: 5px 0 10px 0;
+    height: 3em; /* タイトルの高さを固定し、揃える */
+    overflow: hidden;
+}
+
+/* アルバムジャケット画像 */
+.music-album-poster {
+    width: 100%;
+    /* 正方形を想定 */
+    aspect-ratio: 1 / 1; 
+    display: block;
+    border-radius: 5px;
+    /* 動画/画像をコンテナに合わせて切り抜いて表示 */
+    object-fit: cover; 
+    margin-bottom: 10px;
+}
+
+.music-item-card video {
+    /* videoタグにも上記の music-album-poster スタイルが適用されますが、
+       念のため object-fit: cover を使用し、コントロールバーを含め全体をコンテナに収めます。 */
+    object-fit: cover;
+}
+
+.artist-name {
+    font-size: 1.0rem;
+    color: #bbb;
+    margin: 0 0 10px 0;
+}
+
+.rating {
+    font-size: 1rem;
+    color: gold; /* 星評価を強調 */
+    font-weight: bold;
+}
+
+/* ---------------------------------------------------------------- */
+/* --- 6. お問い合わせページ (contact.html) のフォームスタイル --- */
+/* ---------------------------------------------------------------- */
+
+.contact-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: var(--color-card-bg);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--color-accent);
+}
+
+input[type="text"],
+input[type="email"],
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 5px;
+    background-color: var(--color-input-bg);
+    color: white;
+    box-sizing: border-box;
+    font-size: 1rem;
+    transition: background-color 0.3s, box-shadow 0.3s, border-color 0.3s;
+    outline: none;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 150px;
+}
+
+/* JSによって付与されるスタイル (フォーカスエフェクト) */
+.focused {
+    background-color: #555;
+    box-shadow: 0 0 5px var(--color-accent), 0 0 10px var(--color-accent);
+    border-color: var(--color-accent);
+}
+
+/* 送信ボタン */
+.submit-button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: var(--color-accent);
+    color: var(--color-text-dark);
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+    background-color: #5cc2b2;
+}
+
+/* ---------------------------------------------------------------- */
+/* --- 7. レスポンシブ対応 (メディアクエリ) --- */
+/* ---------------------------------------------------------------- */
+
+/* タブレットサイズ (900px以下) */
+@media (max-width: 900px) {
+
+    /* movie-grid (4列) と five-item-row (5列) の両方を2列に縮小 */
+    .movie-grid,
+    .movie-grid2,
+    .five-item-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+/* スマートフォンサイズ (768px以下) */
+@media (max-width: 768px) {
+
+    /* --- トップページ --- */
+    .grid-container {
+        grid-template-columns: 1fr;
+        /* スマホでは1列 */
+    }
+
+    /* --- お問い合わせページ --- */
+    .contact-container {
+        margin: 20px;
+        padding: 20px;
+    }
+
+    /* --- ヘッダーとボタン --- */
+    header,
+    .contact-header {
+        padding: 60px 20px 40px;
+    }
+
+    .contact-button,
+    .back-to-home,
+    .back-to-home-button {
+        position: absolute;
+        top: 15px;
+        /* 左右の配置はそのまま維持されます */
+    }
+
+    /* --- 詳細ページ --- */
+    /* 横並びを解除して縦積みに */
+    .content-wrapper {
+        flex-direction: column;
+    }
+
+    .summary-card {
+        flex: auto;
+    }
+
+    .character-grid {
+        grid-template-columns: 2, 1fr;
+        /* 画面が狭い場合は1列表示にする */
+    }
+
+    /* 映画グリッド: アベンジャーズとキングダムの4作品を 2列 x 2行にする (ご要望の修正を適用) */
+    .movie-grid,
+    .movie-grid2 {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    /* 映画グリッド: パイレーツオブカリビアンの5作品を 2列に維持 */
+    .five-item-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .eleven-item-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+
+    .movie-series-group {
+        /* 2列に縮小した場合、グループは2列分広がるように設定 (900px以下と同じ) */
+        grid-column: 1 / span 2;
+    }
+
+    /* スマホでタイトルが長すぎるときはフォントを小さく */
+    .movie-item h2 {
+        font-size: 1rem;
+    }
+
+    .movie-item-now h2 {
+        font-size: 0.79rem;
+    }
+
+    .movie-item-row h2 {
+        font-size: 0.9rem;
+    }
+    .fixed-top-left {
+        bottom: 15px;
+        right: 15px;
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
+    .return-home-area {
+         right: 10px;
+        font-size: 1rem;
+        padding: 10px 20px;
+    }
+    .music-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    .section-title {
+        font-size: 1.8rem;
+    }
+    .music-grid-3col {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
